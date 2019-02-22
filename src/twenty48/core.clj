@@ -7,6 +7,14 @@
 
 (def move (comp (partial pad-zeros) (partial map (partial apply +)) (partial partition)))
 
+(defn move-up
+  "Moves grid upwards"
+  [grid] (apply map list (map move (apply map list grid))))
+
+(defn move-down
+  "Moves grid downwards"
+  [grid] (map reverse (move-up (map reverse (apply map list (map reverse (apply map list grid)))))))
+
 (defn move-grid-right
   "Moves an entire grid to the right"
   [grid]
@@ -20,9 +28,9 @@
 (defn move-grid-down
   "Moves an entire grid down"
   [grid]
-  grid)
+ (reverse (move-down grid)))
 
 (defn move-grid-up
   "Moves an entire grid up"
   [grid]
-  grid)
+  (move-up grid))
