@@ -7,9 +7,7 @@
 
 (def move (comp (partial pad-zeros) (partial map (partial apply +)) (partial partition)))
 
-(defn move-up
-  "Moves grid upwards"
-  [grid] (apply map list (map move (apply map list grid))))
+(def move-up (comp (partial apply map list) (partial map move) (partial apply map list)))
 
 (defn move-down
   "Moves grid downwards"
