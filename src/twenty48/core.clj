@@ -1,6 +1,10 @@
 (ns twenty48.core
   (:gen-class))
 
+(def inverse (partial reverse))
+
+(def deep-inverse (partial map reverse))
+
 (def partition (comp (partial mapcat (partial partition-all 2 2)) (partial partition-by identity) (partial remove zero?)))
 
 (def pad-zeros (comp (partial take 4) (partial flatten) (partial conj (repeat 4 0))))
@@ -9,7 +13,7 @@
 
 (def move-up (comp (partial apply map list) (partial map move) (partial apply map list)))
 
-(def move-down (comp (partial reverse) (partial map reverse) (partial move-up) (partial reverse) (partial map reverse)))
+(def move-down (comp inverse deep-inverse (partial move-up) inverse deep-inverse))
 
 (defn move-grid-right
   "Moves an entire grid to the right"
@@ -24,7 +28,7 @@
 (defn move-grid-down
   "Moves an entire grid down"
   [grid]
- (move-down grid))
+  (move-down grid))
 
 (defn move-grid-up
   "Moves an entire grid up"
