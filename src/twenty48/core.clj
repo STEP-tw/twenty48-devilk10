@@ -5,13 +5,15 @@
 
 (def deep-inverse (partial map reverse))
 
-(def partition (comp (partial mapcat (partial partition-all 2 2)) (partial partition-by identity) (partial remove zero?)))
+(def transpose (partial apply map list))
+
+(def tuples (comp (partial mapcat (partial partition-all 2 2)) (partial partition-by identity) (partial remove zero?)))
 
 (def pad-zeros (comp (partial take 4) (partial flatten) (partial conj (repeat 4 0))))
 
-(def move (comp (partial pad-zeros) (partial map (partial apply +)) (partial partition)))
+(def move (comp (partial pad-zeros) (partial map (partial apply +)) (partial tuples)))
 
-(def move-up (comp (partial apply map list) (partial map move) (partial apply map list)))
+(def move-up (comp transpose (partial map move) transpose))
 
 (def move-down (comp inverse deep-inverse (partial move-up) inverse deep-inverse))
 
